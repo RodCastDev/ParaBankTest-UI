@@ -19,13 +19,16 @@ pipeline {
 
         stage('Build & Test') {
             steps {
-                bat 'gradlew.bat clean test'  // Usa `sh` si estás en Linux
+                bat 'gradlew.bat clean test'  // Usa `sh './gradlew clean test'` si estás en Linux
             }
         }
 
         stage('Generate Report') {
             steps {
                 publishHTML([
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
                     reportDir: 'target/site/serenity',
                     reportFiles: 'index.html',
                     reportName: 'Serenity Report'
@@ -33,7 +36,6 @@ pipeline {
             }
         }
 
-        // (Opcional) etapa de artefactos si quieres guardar algo
         stage('Archive Results') {
             steps {
                 archiveArtifacts artifacts: 'target/site/serenity/**/*.*', allowEmptyArchive: true
