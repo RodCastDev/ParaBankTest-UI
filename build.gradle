@@ -1,0 +1,50 @@
+plugins {
+    id 'java'
+    id 'net.serenity-bdd.serenity-gradle-plugin' version '3.9.8'
+}
+
+group 'co.com.encora'
+version '1.0-SNAPSHOT'
+
+ext {
+    serenityVersion = '3.9.8'
+    cucumberVersion = '7.15.0'
+    lombokVersion = '1.18.30'
+    seleniumVersion = '4.19.1'
+    fakerVersion = '1.0.2'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation "net.serenity-bdd:serenity-core:${serenityVersion}"
+    implementation "net.serenity-bdd:serenity-junit:${serenityVersion}"
+    implementation "net.serenity-bdd:serenity-cucumber:${serenityVersion}"
+    implementation "net.serenity-bdd:serenity-screenplay:${serenityVersion}"
+    implementation "net.serenity-bdd:serenity-screenplay-webdriver:${serenityVersion}"
+
+    implementation "org.seleniumhq.selenium:selenium-java:${seleniumVersion}"
+
+    testImplementation "io.cucumber:cucumber-java:${cucumberVersion}"
+    testImplementation "io.cucumber:cucumber-junit:${cucumberVersion}"
+
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    implementation "com.github.javafaker:javafaker:${fakerVersion}"
+}
+
+test {
+
+    testLogging {
+        events "passed", "skipped", "failed", "standard_out", "standard_error"
+        showStandardStreams = true
+        exceptionFormat = "full"
+    }
+    finalizedBy(aggregate)
+}
